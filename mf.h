@@ -79,8 +79,6 @@ namespace mf
 		struct mf_node *block4;
 	}
 
-
-
     template <typename T> T* malloc_aligned_float(mf_long size)
     {
     	mf_int const kALIGNByte = 32;
@@ -102,7 +100,6 @@ namespace mf
 
 	mf_problem read_problem(string path);
 	blocks partition(mf_problem prob);
-	mf_model* mf_load_model(string path);
 
 }
 #endif // _MF_GPU_H

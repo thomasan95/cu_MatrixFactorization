@@ -56,7 +56,7 @@ void sgd_update(Hodwild_Parameters para, mf_model *modal, mf_problem* prob, floa
     cudaMalloc(&rand_state, sizeof(curandState)*para.num_workers);
 }
 
-mf_model* sgd_train(mf_problem* tr, mf_problem*te, Hodwild_Parameters para) {
+mf_model* sgd_train(string path, mf_problem* tr, mf_problem*te, Hodwild_Parameters para) {
     float ave;
     float std_dev;
     float scale = 1.0;
@@ -68,7 +68,7 @@ mf_model* sgd_train(mf_problem* tr, mf_problem*te, Hodwild_Parameters para) {
 
     shuffle_problem(tr, p_map, q_map)
 
-    mf_model* model = mf_load_model(pq_path);
+    mf_model* model = mf_load_model(path);
 
 }
 

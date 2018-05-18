@@ -30,15 +30,9 @@ namespace sgd
         int max_iter = 20;
         float lambda_p = 0.0461;
         float lambda_q = 0.0451;
-        float get_alpha(int iter) {
-            float alpha;
-            float num = 0.08;
-            float den = 1.0 + (0.3)*pow(iter, 1.5);
-            alpha = num / den;
-            return alpha;
-	    }
+        float alpha = 0.08;
     }
-    mf_model* sgd_train(mf_problem*, mf_problem*, Parameter);
+    mf_model* sgd_train(string path, mf_problem*, mf_problem*, Hodwild_Parameters para);
 }
 
-#endif
+#endif //_SGD_GPU_H
