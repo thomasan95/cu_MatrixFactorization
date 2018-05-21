@@ -1,5 +1,6 @@
 #ifndef _MF_GPU_H
 #define _MF_GPU_H
+#include "../common/common.h"
 #include <algorithm>
 #include <cctype>
 #include <cmath>
@@ -10,6 +11,9 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+
+#include "../half-1.12.0/half.hpp"
+
 #include <cuda_runtime.h>
 #include <cuda_fp16.h>
 using namespace std;
@@ -87,10 +91,10 @@ struct hog_params
 	int x_part = 2;
 	int y_part = 2;
 	int batch_size = 128;
-	int max_iters = 30;
+	int max_iters = 35;
 	double lambda_p = 0.0461;
 	double lambda_q = 0.0451;
-	double alpha = 0.05;
+	double alpha = 0.0775;
 	double beta = 0.3;
 	int num_warps = 750;
 };

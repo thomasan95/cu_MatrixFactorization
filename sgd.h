@@ -13,6 +13,7 @@
 #include <vector>
 #include <curand.h>
 #include <curand_kernel.h>
+#include "../common/common.h"
 
 #include <cuda_runtime.h>
 #include <cuda_fp16.h>
@@ -115,8 +116,6 @@ namespace sgd
 			v_ids[i] = i;
 		}
 
-
-		//int num_parallel_workers = 512;//750;
 
 		for (int cur_iter = 0; cur_iter < params.max_iters; cur_iter++) {
 			printf("Progress:\t%d of %d\n", cur_iter, num_iters);

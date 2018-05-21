@@ -6,11 +6,14 @@
 #include <numeric>
 #include <functional>
 #include <algorithm>
+#include "../common/common.h"
+#include "../half-1.12.0/half.hpp"
 #include <cctype>
 #include <cstring>
 #include <stdexcept>
 #include <tuple>
 #include <random>
+
 #include <cuda_runtime.h>
 #include <cuda_fp16.h>
 #include <curand.h>
@@ -133,15 +136,15 @@ void get_mean_stddev(mf_problem& prob, float &avg, float &std_dev) {
 	double tmp_stddev = 0;
 
 	for (long long i = 0; i < prob.nnz; i++) {
-		float rating = prob.R[i].r;
-		tmp_mean += (double)rating;
-		tmp_stddev += (double)rating * rating;
+		tmp_mean += (double)prob.R[i].r;
 	}
-	tmp_mean = tmp_mean / (double)prob.nnz;
-	tmp_stddev = tmp_stddev / (double)prob.nnz;
-
+	tmp_mean /= prob.nnz;
+	for (long long i = 0; i < prob.nnz; i++) {
+		tmp_stddev += pow(prob.R[i].r - tmp_mean, 2);
+	}
+	tmp_stddev /= prob.nnz;
 	avg = (float)tmp_mean;
-	std_dev = (float)sqrt(tmp_stddev - tmp_mean*tmp_mean);
+	std_dev = (float)sqrt(tmp_stddev);
 }
 
 
@@ -152,7 +155,6 @@ void get_mean_stddev(mf_problem& prob, float &avg, float &std_dev) {
 * @return mf_problem with R, m, n, nnz initialized
 */
 mf_problem read_problem(string path) {
-	//A simple function that reads the sparse matrix in COO manner.
 	printf("\nReading Problem From:\t%s\n", path.c_str());
 	mf_problem prob;
 	prob.m = 1;
@@ -163,8 +165,6 @@ mf_problem read_problem(string path) {
 		return prob;
 	}
 	FILE*fptr = fopen(path.c_str(), "rb");
-	// Print length of the file
-	//print_file_len(fptr);
 
 	if (fptr == NULL) {
 		printf("error file open %s\n", path.c_str());
@@ -239,22 +239,10 @@ mf_model * mf_init_model(char const *path, mf_problem& prob) {
 
 	model->P = (short*)malloc(m*k * sizeof(short));
 	model->Q = (short*)malloc(n*k * sizeof(short));
-	/*
-	auto read = [&](short *ptr, long long size)
-	{
-		for (long long i = 0; i < size; i++)
-		{
-			short *ptr1 = ptr + (long long)i*model->k;
-			fread(ptr1, sizeof(short), model->k, fptr);
-		}
-	};
-	*/
+
 	fread(model->P, sizeof(short), model->m*model->k, fptr);
 	fread(model->Q, sizeof(short), model->n*model->k, fptr);
-	//printf("Loading P m:\t%lld\n", model->m);
-	//read(model->P, model->m);
-	//printf("loading Q n:\t%lld\n", model->n);
-	//read(model->Q, model->n);
+
 	printf("Time Elapsed:\t%.8lfs\n\n", (clock() - start) / (double)CLOCKS_PER_SEC);
 	return model;
 }
@@ -378,7 +366,6 @@ int main(int argc, char* argv) {
 	free(prob_train.counts);
 	free(prob_train.R_ptrs);
 	mf_destroy_model(&model);
-
 	return 0;
 }
 
