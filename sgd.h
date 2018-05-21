@@ -13,7 +13,6 @@
 #include <vector>
 #include <curand.h>
 #include <curand_kernel.h>
-#include "../common/common.h"
 
 #include <cuda_runtime.h>
 #include <cuda_fp16.h>
