@@ -6,14 +6,11 @@
 #include <numeric>
 #include <functional>
 #include <algorithm>
-#include "../common/common.h"
-#include "../half-1.12.0/half.hpp"
 #include <cctype>
 #include <cstring>
 #include <stdexcept>
 #include <tuple>
 #include <random>
-
 #include <cuda_runtime.h>
 #include <cuda_fp16.h>
 #include <curand.h>

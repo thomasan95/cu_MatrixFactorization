@@ -1,6 +1,5 @@
 #ifndef _MF_GPU_H
 #define _MF_GPU_H
-#include "../common/common.h"
 #include <algorithm>
 #include <cctype>
 #include <cmath>
@@ -11,9 +10,6 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
-
-#include "../half-1.12.0/half.hpp"
-
 #include <cuda_runtime.h>
 #include <cuda_fp16.h>
 using namespace std;
